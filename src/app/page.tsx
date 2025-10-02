@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const podcasts = [
     {
@@ -21,15 +22,29 @@ export default function Home() {
       url: "https://darknetdiaries.com",
       image: "https://darknetdiaries.com/imgs/logo.jpg",
     },
-    // Add more podcasts here
+    {
+      title: "Shop Talk Show",
+      category: "Web Development",
+      description: "A podcast about front-end and web design.",
+      url: "https://shoptalkshow.com/",
+      image: "https://shoptalkshow.com/images/logo.png",
+    },
   ];
 
-  // Filter podcasts based on search input
-  const filteredPodcasts = podcasts.filter(
-    (podcast) =>
+  // Get unique categories
+  const categories = ["All", ...new Set(podcasts.map((p) => p.category))];
+
+  // Filter podcasts based on search input and selected category
+  const filteredPodcasts = podcasts.filter((podcast) => {
+    const matchesSearch =
       podcast.title.toLowerCase().includes(search.toLowerCase()) ||
-      podcast.category.toLowerCase().includes(search.toLowerCase())
-  );
+      podcast.category.toLowerCase().includes(search.toLowerCase());
+
+    const matchesCategory =
+      selectedCategory === "All" || podcast.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <main className="min-h-screen p-10">
@@ -42,8 +57,25 @@ export default function Home() {
         placeholder="Search podcasts by title or category..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-3 mb-8 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-3 mb-6 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+
+      {/* Category filters */}
+      <div className="flex flex-wrap gap-3 mb-8">
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={`px-4 py-2 rounded-full border transition ${
+              selectedCategory === category
+                ? "bg-blue-500 text-white border-blue-500"
+                : "bg-white text-gray-700 hover:bg-blue-100"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
       {/* Podcasts grid */}
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
