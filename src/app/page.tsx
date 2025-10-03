@@ -6,7 +6,6 @@ import DarkModeToggle from "../components/DarkModeToggle";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PodcastCard from "../components/PodcastCard";
-import Footer from "../components/Footer";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -58,7 +57,6 @@ export default function Home() {
     },
   ];
 
-  // Categories + Favorites tab
   const categories = ["All", ...new Set(podcasts.map((p) => p.category)), "❤️ Favorites"];
 
   // Filter podcasts
@@ -80,19 +78,13 @@ export default function Home() {
 
   // Sort podcasts
   filteredPodcasts = [...filteredPodcasts].sort((a, b) => {
-    if (sortOption === "alphabetical") {
-      return a.title.localeCompare(b.title);
-    }
-    if (sortOption === "category") {
-      return a.category.localeCompare(b.category);
-    }
-    if (sortOption === "recent") {
+    if (sortOption === "alphabetical") return a.title.localeCompare(b.title);
+    if (sortOption === "category") return a.category.localeCompare(b.category);
+    if (sortOption === "recent")
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    }
     return 0;
   });
 
-  // Toggle favorite
   const toggleFavorite = (title: string) => {
     setFavorites((prev) =>
       prev.includes(title) ? prev.filter((f) => f !== title) : [...prev, title]
@@ -103,7 +95,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Background Pattern */}
       <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
-      
+
       <main className="relative container mx-auto px-4 py-8 md:px-6 lg:px-8">
         <Header />
 
@@ -124,7 +116,9 @@ export default function Home() {
             <p className="text-sm text-muted-foreground">
               {filteredPodcasts.length === 0
                 ? "No podcasts found"
-                : `Showing ${filteredPodcasts.length} podcast${filteredPodcasts.length === 1 ? "" : "s"}`}
+                : `Showing ${filteredPodcasts.length} podcast${
+                    filteredPodcasts.length === 1 ? "" : "s"
+                  }`}
               {selectedCategory !== "All" && (
                 <span className="ml-1">in "{selectedCategory}"</span>
               )}
@@ -170,9 +164,6 @@ export default function Home() {
         {/* Dark Mode Toggle */}
         <DarkModeToggle />
       </main>
-      
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }
