@@ -6,7 +6,7 @@ import DarkModeToggle from "../components/DarkModeToggle";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PodcastCard from "../components/PodcastCard";
-import Footer from "../components/Footer";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -172,7 +172,23 @@ export default function Home() {
       </main>
       
       {/* Footer */}
-      <Footer />
+      <Footer 
+      siteName="Podcast Hub"
+        year={new Date().getFullYear()}
+          quickLinks={[
+          { label: "About", href: "/about" },
+          { label: "Contact", href: "/contact" },
+          { label: "Terms", href: "/terms" },
+          { label: "Privacy", href: "/privacy" },
+        ]}
+         social={[
+          { name: "X", href: "https://x.com/podcast-hub" },
+          { name: "GitHub", href: "https://github.com/podcast-hub" },
+          { name: "LinkedIn", href: "https://linkedin.com/company/podcast-hub" },
+          { name: "Instagram", href: "https://instagram.com/podcast-hub" },
+        ]}
+      
+      />
     </div>
   );
 }
