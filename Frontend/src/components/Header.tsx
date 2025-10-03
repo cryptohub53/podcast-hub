@@ -2,6 +2,9 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a860b94 (Refactor the project structure and set-up mongo db in the backend)
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -111,6 +114,7 @@ export default function Header() {
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 px-4">
           Discover, explore, and enjoy your favorite podcasts in a modern, beautiful interface
         </p>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
@@ -143,6 +147,8 @@ export default function Header() {
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
 =======
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
+=======
+>>>>>>> a860b94 (Refactor the project structure and set-up mongo db in the backend)
       </div>
     </header>
   );
