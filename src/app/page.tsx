@@ -6,7 +6,6 @@ import Navbar from "../components/Navbar";
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isDark, setIsDark] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("alphabetical");
 
@@ -41,7 +40,7 @@ export default function Home() {
     {
       title: "Darknet Diaries",
       category: "Cybersecurity",
-      description: "True stories from the dark side of the internet.",
+      description: "True stories from the dark side of the internet. Explore the world of cybercrime, hackers, and digital forensics.",
       url: "https://darknetdiaries.com",
       image: "https://cybersecurityventures.com/wp-content/uploads/2023/11/dd-2.png",
       timestamp: "2024-08-15",
@@ -49,7 +48,7 @@ export default function Home() {
     {
       title: "Shop Talk Show",
       category: "Web Development",
-      description: "A podcast about front-end and web design.",
+      description: "A podcast about front-end web design and development. Chris Coyier and Dave Rupert discuss the latest in web technology.",
       url: "https://shoptalkshow.com/",
       image: "https://images.cdn.kukufm.com/w:1080/f:webp/q:50/https://images.cdn.kukufm.com/f:webp/https://files.hubhopper.com/podcast/169605/1400x1400/the-reality-talk-show.jpg?v=1588485779",
       timestamp: "2024-09-20",
