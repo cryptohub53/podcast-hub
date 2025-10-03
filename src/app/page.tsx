@@ -1,10 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const isDarkMode = document.documentElement.classList.contains("dark");
+      setIsDark(isDarkMode);
+    };
+
+    checkDarkMode();
+    
+    // Listen for changes to the dark class
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const podcasts = [
     {
@@ -45,13 +65,26 @@ export default function Home() {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-10 font-sans">
+    <main 
+      className="min-h-screen p-10 font-sans transition-colors duration-300"
+      style={{
+        background: isDark 
+          ? 'linear-gradient(to bottom right, #1f2937, #374151, #1f2937)'
+          : 'linear-gradient(to bottom right, #eff6ff, #faf5ff, #fdf2f8)'
+      }}
+    >
       {/* Header */}
       <header className="text-center mb-10">
-        <h1 className="text-5xl font-extrabold mb-4 text-gray-900">
+        <h1 
+          className="text-5xl font-extrabold mb-4 transition-colors duration-300"
+          style={{ color: isDark ? '#ffffff' : '#111827' }}
+        >
           🎙️ Podcast Hub
         </h1>
-        <p className="text-gray-700 text-lg">
+        <p 
+          className="text-lg transition-colors duration-300"
+          style={{ color: isDark ? '#d1d5db' : '#374151' }}
+        >
           Discover, explore, and enjoy your favorite podcasts
         </p>
       </header>
@@ -63,7 +96,12 @@ export default function Home() {
           placeholder="Search podcasts by title or category..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 p-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-800"
+          className="flex-1 p-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-300"
+          style={{
+            backgroundColor: isDark ? '#374151' : '#ffffff',
+            color: isDark ? '#e5e7eb' : '#1f2937',
+            borderColor: isDark ? '#4b5563' : '#d1d5db'
+          }}
         />
 
         {/* Category Filters */}
@@ -72,11 +110,22 @@ export default function Home() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full border transition font-medium ${
+              className={`px-4 py-2 rounded-full border transition-all duration-300 font-medium ${
                 selectedCategory === category
                   ? "bg-purple-600 text-white border-purple-600"
-                  : "bg-white text-gray-800 border-gray-300 hover:bg-purple-100"
+                  : "hover:bg-purple-100"
               }`}
+              style={{
+                backgroundColor: selectedCategory === category 
+                  ? '#9333ea' 
+                  : (isDark ? '#374151' : '#ffffff'),
+                color: selectedCategory === category 
+                  ? '#ffffff' 
+                  : (isDark ? '#e5e7eb' : '#1f2937'),
+                borderColor: selectedCategory === category 
+                  ? '#9333ea' 
+                  : (isDark ? '#4b5563' : '#d1d5db')
+              }}
             >
               {category}
             </button>
@@ -93,7 +142,10 @@ export default function Home() {
               href={podcast.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              className="flex flex-col rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              style={{
+                backgroundColor: isDark ? '#1f2937' : '#ffffff'
+              }}
             >
               {/* Image */}
               <div className="relative w-full h-44">
@@ -109,10 +161,18 @@ export default function Home() {
 
               {/* Info */}
               <div className="p-5 flex flex-col flex-1">
-                <h2 className="text-xl font-bold mb-2 text-gray-900">
+                <h2 
+                  className="text-xl font-bold mb-2 transition-colors duration-300"
+                  style={{ color: isDark ? '#ffffff' : '#111827' }}
+                >
                   {podcast.title}
                 </h2>
-                <p className="text-gray-600 text-sm flex-1">{podcast.description}</p>
+                <p 
+                  className="text-sm flex-1 transition-colors duration-300"
+                  style={{ color: isDark ? '#d1d5db' : '#4b5563' }}
+                >
+                  {podcast.description}
+                </p>
                 <span className="mt-4 inline-block text-purple-600 font-semibold text-sm hover:underline">
                   Visit Podcast &rarr;
                 </span>
@@ -120,11 +180,17 @@ export default function Home() {
             </a>
           ))
         ) : (
-          <p className="text-gray-500 col-span-full text-center text-lg">
+          <p 
+            className="col-span-full text-center text-lg transition-colors duration-300"
+            style={{ color: isDark ? '#9ca3af' : '#6b7280' }}
+          >
             No podcasts found.
           </p>
         )}
       </div>
+      
+      {/* Dark Mode Toggle */}
+      <DarkModeToggle />
     </main>
   );
 }
