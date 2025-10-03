@@ -8,6 +8,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isDark, setIsDark] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState("alphabetical"); // new state
 
   // Dark mode state listener
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function Home() {
       url: "https://syntax.fm",
       image:
         "https://i0.wp.com/www.lemonproductions.ca/wp-content/uploads/2021/11/Syntax-podcast.jpg?fit=1200%2C900&ssl=1",
+      timestamp: "2024-09-01",
     },
     {
       title: "Darknet Diaries",
@@ -57,6 +59,7 @@ export default function Home() {
       url: "https://darknetdiaries.com",
       image:
         "https://cybersecurityventures.com/wp-content/uploads/2023/11/dd-2.png",
+      timestamp: "2024-08-15",
     },
     {
       title: "Shop Talk Show",
@@ -65,13 +68,15 @@ export default function Home() {
       url: "https://shoptalkshow.com/",
       image:
         "https://images.cdn.kukufm.com/w:1080/f:webp/q:50/https://images.cdn.kukufm.com/f:webp/https://files.hubhopper.com/podcast/169605/1400x1400/the-reality-talk-show.jpg?v=1588485779",
+      timestamp: "2024-09-20",
     },
   ];
 
   // Categories + Favorites tab
   const categories = ["All", ...new Set(podcasts.map((p) => p.category)), "❤️ Favorites"];
 
-  const filteredPodcasts = podcasts.filter((podcast) => {
+  // Filter podcasts
+  let filteredPodcasts = podcasts.filter((podcast) => {
     const matchesSearch =
       podcast.title.toLowerCase().includes(search.toLowerCase()) ||
       podcast.category.toLowerCase().includes(search.toLowerCase());
@@ -84,6 +89,20 @@ export default function Home() {
         : podcast.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
+  });
+
+  // Sort podcasts
+  filteredPodcasts = [...filteredPodcasts].sort((a, b) => {
+    if (sortOption === "alphabetical") {
+      return a.title.localeCompare(b.title);
+    }
+    if (sortOption === "category") {
+      return a.category.localeCompare(b.category);
+    }
+    if (sortOption === "recent") {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    }
+    return 0;
   });
 
   // Toggle favorite
@@ -118,8 +137,9 @@ export default function Home() {
         </p>
       </header>
 
-      {/* Search Input */}
+      {/* Search + Sort */}
       <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
+        {/* Search Input */}
         <input
           type="text"
           placeholder="Search podcasts by title or category..."
@@ -133,42 +153,58 @@ export default function Home() {
           }}
         />
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full border transition-all duration-300 font-medium ${
+        {/* Sort Dropdown */}
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-300"
+          style={{
+            backgroundColor: isDark ? "#374151" : "#ffffff",
+            color: isDark ? "#e5e7eb" : "#1f2937",
+            borderColor: isDark ? "#4b5563" : "#d1d5db",
+          }}
+        >
+          <option value="alphabetical">Sort: A–Z</option>
+          <option value="category">Sort: By Category</option>
+          <option value="recent">Sort: Most Recent</option>
+        </select>
+      </div>
+
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={`px-4 py-2 rounded-full border transition-all duration-300 font-medium ${
+              selectedCategory === category
+                ? "bg-purple-600 text-white border-purple-600"
+                : "hover:bg-purple-100"
+            }`}
+            style={{
+              backgroundColor:
                 selectedCategory === category
-                  ? "bg-purple-600 text-white border-purple-600"
-                  : "hover:bg-purple-100"
-              }`}
-              style={{
-                backgroundColor:
-                  selectedCategory === category
-                    ? "#9333ea"
-                    : isDark
-                    ? "#374151"
-                    : "#ffffff",
-                color:
-                  selectedCategory === category
-                    ? "#ffffff"
-                    : isDark
-                    ? "#e5e7eb"
-                    : "#1f2937",
-                borderColor:
-                  selectedCategory === category
-                    ? "#9333ea"
-                    : isDark
-                    ? "#4b5563"
-                    : "#d1d5db",
-              }}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+                  ? "#9333ea"
+                  : isDark
+                  ? "#374151"
+                  : "#ffffff",
+              color:
+                selectedCategory === category
+                  ? "#ffffff"
+                  : isDark
+                  ? "#e5e7eb"
+                  : "#1f2937",
+              borderColor:
+                selectedCategory === category
+                  ? "#9333ea"
+                  : isDark
+                  ? "#4b5563"
+                  : "#d1d5db",
+            }}
+          >
+            {category}
+          </button>
+        ))}
       </div>
 
       {/* Podcasts Grid */}
