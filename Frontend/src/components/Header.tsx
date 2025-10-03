@@ -3,8 +3,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a860b94 (Refactor the project structure and set-up mongo db in the backend)
+=======
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 151b0b3 (Refactor the project structure and set-up mongo db in the backend)
+>>>>>>> 1cb259e (Refactor the project structure and set-up mongo db in the backend)
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -117,6 +124,10 @@ export default function Header() {
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 1cb259e (Refactor the project structure and set-up mongo db in the backend)
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
 import { Mic, Waves } from "lucide-react";
 
@@ -147,8 +158,12 @@ export default function Header() {
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
 =======
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
+<<<<<<< HEAD
 =======
 >>>>>>> a860b94 (Refactor the project structure and set-up mongo db in the backend)
+=======
+>>>>>>> 151b0b3 (Refactor the project structure and set-up mongo db in the backend)
+>>>>>>> 1cb259e (Refactor the project structure and set-up mongo db in the backend)
       </div>
     </header>
   );
