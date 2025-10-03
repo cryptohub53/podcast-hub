@@ -1,13 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function DarkModeToggle() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    
+    if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
       setIsDark(true);
       document.documentElement.classList.add("dark");
     }
@@ -27,20 +31,18 @@ export default function DarkModeToggle() {
   };
 
   return (
-    <button
+    <Button
       onClick={toggleDarkMode}
-      className="fixed top-4 right-4 z-50 p-3 border rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-      style={{
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        borderColor: isDark ? '#374151' : '#d1d5db'
-      }}
+      variant="outline"
+      size="icon"
+      className="fixed top-4 right-4 z-50 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-md bg-background/90 border-border"
       aria-label="Toggle dark mode"
     >
       {isDark ? (
-        <span className="text-2xl">☀️</span>
+        <Sun className="h-4 w-4 transition-all rotate-0 scale-100" />
       ) : (
-        <span className="text-2xl">🌙</span>
+        <Moon className="h-4 w-4 transition-all rotate-0 scale-100" />
       )}
-    </button>
+    </Button>
   );
 }

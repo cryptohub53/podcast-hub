@@ -1,32 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Podcast } from "lucide-react";
 import DarkModeToggle from "../components/DarkModeToggle";
+import Header from "../components/Header";
+import SearchBar from "../components/SearchBar";
+import PodcastCard from "../components/PodcastCard";
+import Footer from "../components/Footer";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isDark, setIsDark] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [sortOption, setSortOption] = useState("alphabetical"); // new state
-
-  // Dark mode state listener
-  useEffect(() => {
-    const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains("dark");
-      setIsDark(isDarkMode);
-    };
-
-    checkDarkMode();
-
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const [sortOption, setSortOption] = useState("alphabetical");
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -46,7 +32,7 @@ export default function Home() {
       title: "Syntax",
       category: "Web Development",
       description:
-        "A podcast about web development, hosted by Wes Bos and Scott Tolinski.",
+        "A podcast about web development, hosted by Wes Bos and Scott Tolinski. They cover everything from JavaScript frameworks to career advice.",
       url: "https://syntax.fm",
       image:
         "https://i0.wp.com/www.lemonproductions.ca/wp-content/uploads/2021/11/Syntax-podcast.jpg?fit=1200%2C900&ssl=1",
@@ -55,7 +41,7 @@ export default function Home() {
     {
       title: "Darknet Diaries",
       category: "Cybersecurity",
-      description: "True stories from the dark side of the internet.",
+      description: "True stories from the dark side of the internet. Explore the world of cybercrime, hackers, and digital forensics.",
       url: "https://darknetdiaries.com",
       image:
         "https://cybersecurityventures.com/wp-content/uploads/2023/11/dd-2.png",
@@ -64,7 +50,7 @@ export default function Home() {
     {
       title: "Shop Talk Show",
       category: "Web Development",
-      description: "A podcast about front-end and web design.",
+      description: "A podcast about front-end web design and development. Chris Coyier and Dave Rupert discuss the latest in web technology.",
       url: "https://shoptalkshow.com/",
       image:
         "https://images.cdn.kukufm.com/w:1080/f:webp/q:50/https://images.cdn.kukufm.com/f:webp/https://files.hubhopper.com/podcast/169605/1400x1400/the-reality-talk-show.jpg?v=1588485779",
@@ -79,7 +65,8 @@ export default function Home() {
   let filteredPodcasts = podcasts.filter((podcast) => {
     const matchesSearch =
       podcast.title.toLowerCase().includes(search.toLowerCase()) ||
-      podcast.category.toLowerCase().includes(search.toLowerCase());
+      podcast.category.toLowerCase().includes(search.toLowerCase()) ||
+      podcast.description.toLowerCase().includes(search.toLowerCase());
 
     const matchesCategory =
       selectedCategory === "All"
@@ -113,170 +100,79 @@ export default function Home() {
   };
 
   return (
-    <main
-      className="min-h-screen p-10 font-sans transition-colors duration-300"
-      style={{
-        background: isDark
-          ? "linear-gradient(to bottom right, #1f2937, #374151, #1f2937)"
-          : "linear-gradient(to bottom right, #eff6ff, #faf5ff, #fdf2f8)",
-      }}
-    >
-      {/* Header */}
-      <header className="text-center mb-10">
-        <h1
-          className="text-5xl font-extrabold mb-4 transition-colors duration-300"
-          style={{ color: isDark ? "#ffffff" : "#111827" }}
-        >
-          🎙️ Podcast Hub
-        </h1>
-        <p
-          className="text-lg transition-colors duration-300"
-          style={{ color: isDark ? "#d1d5db" : "#374151" }}
-        >
-          Discover, explore, and enjoy your favorite podcasts
-        </p>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      {/* Background Pattern */}
+      <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
+      
+      <main className="relative container mx-auto px-4 py-8 md:px-6 lg:px-8">
+        <Header />
 
-      {/* Search + Sort */}
-      <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
-        {/* Search Input */}
-        <input
-          type="text"
-          placeholder="Search podcasts by title or category..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 p-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-300"
-          style={{
-            backgroundColor: isDark ? "#374151" : "#ffffff",
-            color: isDark ? "#e5e7eb" : "#1f2937",
-            borderColor: isDark ? "#4b5563" : "#d1d5db",
-          }}
-        />
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Search and Filters */}
+          <SearchBar
+            search={search}
+            onSearchChange={setSearch}
+            sortOption={sortOption}
+            onSortChange={setSortOption}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            categories={categories}
+          />
 
-        {/* Sort Dropdown */}
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-300"
-          style={{
-            backgroundColor: isDark ? "#374151" : "#ffffff",
-            color: isDark ? "#e5e7eb" : "#1f2937",
-            borderColor: isDark ? "#4b5563" : "#d1d5db",
-          }}
-        >
-          <option value="alphabetical">Sort: A–Z</option>
-          <option value="category">Sort: By Category</option>
-          <option value="recent">Sort: Most Recent</option>
-        </select>
-      </div>
+          {/* Results Summary */}
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              {filteredPodcasts.length === 0
+                ? "No podcasts found"
+                : `Showing ${filteredPodcasts.length} podcast${filteredPodcasts.length === 1 ? "" : "s"}`}
+              {selectedCategory !== "All" && (
+                <span className="ml-1">in "{selectedCategory}"</span>
+              )}
+            </p>
+          </div>
 
-      {/* Category Filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-full border transition-all duration-300 font-medium ${
-              selectedCategory === category
-                ? "bg-purple-600 text-white border-purple-600"
-                : "hover:bg-purple-100"
-            }`}
-            style={{
-              backgroundColor:
-                selectedCategory === category
-                  ? "#9333ea"
-                  : isDark
-                  ? "#374151"
-                  : "#ffffff",
-              color:
-                selectedCategory === category
-                  ? "#ffffff"
-                  : isDark
-                  ? "#e5e7eb"
-                  : "#1f2937",
-              borderColor:
-                selectedCategory === category
-                  ? "#9333ea"
-                  : isDark
-                  ? "#4b5563"
-                  : "#d1d5db",
-            }}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* Podcasts Grid */}
-      <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {filteredPodcasts.length > 0 ? (
-          filteredPodcasts.map((podcast) => (
-            <div
-              key={podcast.title}
-              className="flex flex-col rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden relative"
-              style={{
-                backgroundColor: isDark ? "#1f2937" : "#ffffff",
-              }}
-            >
-              {/* Heart Button */}
-              <button
-                onClick={() => toggleFavorite(podcast.title)}
-                className="absolute top-3 right-3 text-2xl z-20 bg-white/70 dark:bg-gray-800/70 rounded-full p-1"
-              >
-                {favorites.includes(podcast.title) ? "❤️" : "🤍"}
-              </button>
-
-              {/* Image */}
-              <div className="relative w-full h-44">
-                <img
-                  src={podcast.image}
-                  alt={podcast.title}
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-3 left-3 bg-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-                  {podcast.category}
-                </span>
-              </div>
-
-              {/* Info */}
-              <div className="p-5 flex flex-col flex-1">
-                <h2
-                  className="text-xl font-bold mb-2 transition-colors duration-300"
-                  style={{ color: isDark ? "#ffffff" : "#111827" }}
+          {/* Podcasts Grid */}
+          {filteredPodcasts.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredPodcasts.map((podcast, index) => (
+                <div
+                  key={podcast.title}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {podcast.title}
-                </h2>
-                <p
-                  className="text-sm flex-1 transition-colors duration-300"
-                  style={{ color: isDark ? "#d1d5db" : "#4b5563" }}
-                >
-                  {podcast.description}
+                  <PodcastCard
+                    podcast={podcast}
+                    isFavorite={favorites.includes(podcast.title)}
+                    onToggleFavorite={toggleFavorite}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 animate-fade-in">
+              <div className="mb-6">
+                <Podcast className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  {selectedCategory === "❤️ Favorites"
+                    ? "No favorites yet"
+                    : "No podcasts found"}
+                </h3>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                  {selectedCategory === "❤️ Favorites"
+                    ? "Start adding podcasts to your favorites by clicking the heart icon on any podcast card."
+                    : "Try adjusting your search terms or browse different categories to find what you're looking for."}
                 </p>
-                <a
-                  href={podcast.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block text-purple-600 font-semibold text-sm hover:underline"
-                >
-                  Visit Podcast &rarr;
-                </a>
               </div>
             </div>
-          ))
-        ) : (
-          <p
-            className="col-span-full text-center text-lg transition-colors duration-300"
-            style={{ color: isDark ? "#9ca3af" : "#6b7280" }}
-          >
-            {selectedCategory === "❤️ Favorites"
-              ? "No favorites saved yet."
-              : "No podcasts found."}
-          </p>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* Dark Mode Toggle */}
-      <DarkModeToggle />
-    </main>
+        {/* Dark Mode Toggle */}
+        <DarkModeToggle />
+      </main>
+      
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }
