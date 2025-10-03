@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function Home() {
@@ -68,7 +68,8 @@ export default function Home() {
     },
   ];
 
-  const categories = ["All", ...new Set(podcasts.map((p) => p.category))];
+  // Categories + Favorites tab
+  const categories = ["All", ...new Set(podcasts.map((p) => p.category)), "❤️ Favorites"];
 
   const filteredPodcasts = podcasts.filter((podcast) => {
     const matchesSearch =
@@ -76,7 +77,11 @@ export default function Home() {
       podcast.category.toLowerCase().includes(search.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === "All" || podcast.category === selectedCategory;
+      selectedCategory === "All"
+        ? true
+        : selectedCategory === "❤️ Favorites"
+        ? favorites.includes(podcast.title)
+        : podcast.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -227,7 +232,9 @@ export default function Home() {
             className="col-span-full text-center text-lg transition-colors duration-300"
             style={{ color: isDark ? "#9ca3af" : "#6b7280" }}
           >
-            No podcasts found.
+            {selectedCategory === "❤️ Favorites"
+              ? "No favorites saved yet."
+              : "No podcasts found."}
           </p>
         )}
       </div>
