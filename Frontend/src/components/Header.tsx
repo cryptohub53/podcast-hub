@@ -1,6 +1,7 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -111,6 +112,8 @@ export default function Header() {
           Discover, explore, and enjoy your favorite podcasts in a modern, beautiful interface
         </p>
 =======
+=======
+>>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
 import { Mic, Waves } from "lucide-react";
 
 export default function Header() {
@@ -136,6 +139,9 @@ export default function Header() {
       
       <div className="mt-6 flex justify-center">
         <div className="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+<<<<<<< HEAD
+>>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
+=======
 >>>>>>> dcfcaf7 (Refactor the project structure and set-up mongo db in the backend)
       </div>
     </header>
