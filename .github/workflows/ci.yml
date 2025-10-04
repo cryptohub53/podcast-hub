@@ -64,3 +64,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Build backend
+        run: npm run build
