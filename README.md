@@ -9,3 +9,5 @@ git clone https://github.com/yourusername/podcast-hub.git
 cd podcast-hub
 npm install
 npm run dev
+
+Discord link: https://discord.gg/sWMYzxsE
