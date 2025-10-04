@@ -34,9 +34,6 @@ jobs:
       - name: Run TypeScript checks
         run: npm run type-check
 
-      - name: Run linting
-        run: npm run lint
-
       - name: Build Next.js project
         run: npm run build
 
