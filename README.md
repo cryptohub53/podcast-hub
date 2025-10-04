@@ -1,6 +1,7 @@
 # 🎙️ Podcast Hub
 
-A simple **Next.js + Tailwind** project to discover podcasts.  
+A simple **Next.js + Tailwind** project to discover podcasts.
+Discord link: https://discord.gg/sWMYzxsE
 
 ## 🏗️ Tech Stack
 
