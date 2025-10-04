@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
+import useDebounceEffect from "@/hooks/useDebounceeffect";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -25,6 +27,16 @@ export default function SearchBar({
   onCategoryChange,
   categories,
 }: SearchBarProps) {
+  
+  const [input, setInput] = useState(search);
+
+  //Syncing local input state when external search prop changes
+  useEffect(() => {
+    setInput(search);
+  }, [search]);
+
+  useDebounceEffect(input, 1000, onSearchChange);
+  
   const sortOptions = [
     { value: "alphabetical", label: "A-Z" },
     { value: "category", label: "Category" },
@@ -41,8 +53,8 @@ export default function SearchBar({
           <Input
             type="text"
             placeholder="Search podcasts by title or category..."
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="pl-10 h-12 text-base"
           />
         </div>
