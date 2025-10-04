@@ -1,6 +1,9 @@
 # 🎙️ Podcast Hub
 
 A simple **Next.js + Tailwind** project to discover podcasts.
+Deployement Links:
+Frontend : https://podcast-hub-seven.vercel.app
+Backend : https://podcast-hub-jy1r.onrender.com
 Discord link: https://discord.gg/sWMYzxsE
 
 ## 🏗️ Tech Stack
