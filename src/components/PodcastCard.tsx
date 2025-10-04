@@ -22,9 +22,9 @@ interface PodcastCardProps {
 export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: PodcastCardProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -37,7 +37,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        
+
         {/* Favorite Button */}
         <Button
           onClick={() => onToggleFavorite(podcast.title)}
@@ -45,12 +45,12 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           size="icon"
           className={cn(
             "absolute top-2 right-2 h-8 w-8 backdrop-blur-md transition-all duration-200",
-            isFavorite 
-              ? "bg-red-500/20 text-red-500 hover:bg-red-500/30" 
+            isFavorite
+              ? "bg-red-500/20 text-red-500 hover:bg-red-500/30"
               : "bg-black/20 text-white hover:bg-black/40"
           )}
         >
-          <Heart 
+          <Heart
             className={cn(
               "h-4 w-4 transition-all duration-200",
               isFavorite && "fill-current"
@@ -58,12 +58,13 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           />
         </Button>
 
-        {/* Category Badge */}
-        <Badge 
-          variant="secondary" 
-          className="absolute bottom-2 left-2 bg-primary/90 text-white/80 backdrop-blur-sm dark"
+        {/* Category Badge (Purple Theme) */}
+        <Badge
+          className="absolute bottom-2 left-2 rounded-full px-3 py-1 text-xs font-medium 
+                     bg-purple-500 text-white shadow-md 
+                     hover:bg-purple-600 transition-colors duration-200"
         >
-          {podcast.category}
+        🎧 {podcast.category}
         </Badge>
 
         {/* Date */}
@@ -74,10 +75,10 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
       </div>
 
       <CardContent className="p-4">
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-200">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200">
           {podcast.title}
         </h3>
-        
+
         <p className="text-sm text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
           {podcast.description}
         </p>
@@ -94,7 +95,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
             className="flex items-center justify-center gap-2"
           >
             Listen Now
-            <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+            <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1 text-purple-600" />
           </a>
         </Button>
       </CardContent>
