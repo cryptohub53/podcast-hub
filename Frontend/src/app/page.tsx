@@ -7,17 +7,27 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PodcastCard from "../components/PodcastCard";
 import Footer from "../components/Footer";
+import DiscordModal from "../components/DiscordModal";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("alphabetical");
-  const [visibleCount, setVisibleCount] = useState(3); // initial visible cards
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [showDiscordModal, setShowDiscordModal] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("favorites");
     if (saved) setFavorites(JSON.parse(saved));
+
+    const hasSeenDiscordModal = localStorage.getItem("hasSeenDiscordModal");
+    if (!hasSeenDiscordModal) {
+      setTimeout(() => {
+        setShowDiscordModal(true);
+        localStorage.setItem("hasSeenDiscordModal", "true");
+      }, 2000);
+    }
   }, []);
 
   useEffect(() => {
@@ -201,7 +211,12 @@ export default function Home() {
         <DarkModeToggle />
       </main>
 
-      <Footer />
+      <Footer onDiscordClick={() => setShowDiscordModal(true)} />
+
+      <DiscordModal
+        isOpen={showDiscordModal}
+        onClose={() => setShowDiscordModal(false)}
+      />
     </div>
   );
 }
