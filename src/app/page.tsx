@@ -6,7 +6,6 @@ import DarkModeToggle from "../components/DarkModeToggle";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import PodcastCard from "../components/PodcastCard";
-import Footer from "../components/Footer";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -115,8 +114,8 @@ export default function Home() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    loadUntilScrollable(); // initial check
-    const interval = setInterval(loadUntilScrollable, 100); // keep checking until scrollable
+    loadUntilScrollable();
+    const interval = setInterval(loadUntilScrollable, 100);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -126,6 +125,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      {/* Background Pattern */}
       <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
 
       <main className="relative container mx-auto px-4 py-8 md:px-6 lg:px-8">
@@ -142,6 +142,7 @@ export default function Home() {
             categories={categories}
           />
 
+          {/* Results Summary */}
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
               {filteredPodcasts.length === 0
@@ -149,10 +150,13 @@ export default function Home() {
                 : `Showing ${visiblePodcasts.length} of ${filteredPodcasts.length} podcast${
                     filteredPodcasts.length === 1 ? "" : "s"
                   }`}
-              {selectedCategory !== "All" && <span className="ml-1">in "{selectedCategory}"</span>}
+              {selectedCategory !== "All" && (
+                <span className="ml-1">in "{selectedCategory}"</span>
+              )}
             </p>
           </div>
 
+          {/* Podcasts Grid */}
           {visiblePodcasts.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {visiblePodcasts.map((podcast, index) => (
@@ -188,8 +192,6 @@ export default function Home() {
 
         <DarkModeToggle />
       </main>
-
-      <Footer />
     </div>
   );
 }

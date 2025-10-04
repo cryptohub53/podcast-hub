@@ -1,7 +1,7 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css"
+import "./globals.css";
+import Footer from "../components/Footer"; // ✅ keep footer import
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,13 +17,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Podcast Hub - Discover Amazing Podcasts",
-  description: "Discover, explore, and enjoy your favorite podcasts in a modern, beautiful interface. Find the best podcasts across technology, cybersecurity, and more.",
-  keywords: ["podcasts", "technology", "cybersecurity", "web development", "software engineering"],
+  description:
+    "Discover, explore, and enjoy your favorite podcasts in a modern, beautiful interface. Find the best podcasts across technology, cybersecurity, and more.",
+  keywords: [
+    "podcasts",
+    "technology",
+    "cybersecurity",
+    "web development",
+    "software engineering",
+  ],
   authors: [{ name: "Podcast Hub Team" }],
   viewport: "width=device-width, initial-scale=1",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#a855f7" },
-    { media: "(prefers-color-scheme: dark)", color: "#a855f7" }
+    { media: "(prefers-color-scheme: dark)", color: "#a855f7" },
   ],
 };
 
@@ -38,10 +45,14 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
         suppressHydrationWarning
       >
-        {children}
+        {/* Main content expands */}
+        <main className="flex-grow">{children}</main>
+
+        {/* Footer stays at bottom */}
+        <Footer />
       </body>
     </html>
   );
