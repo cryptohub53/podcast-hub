@@ -47,7 +47,7 @@ npm install
 # Create .env file with required environment variables
 cp .env.example .env
 # Start the development server
-npm run dev
+npm start
 ```
 The backend API will be available at `http://localhost:5000`
 
@@ -61,7 +61,6 @@ The backend API will be available at `http://localhost:5000`
 - `npm run type-check` - Run TypeScript checks
 
 ### Backend
-- `npm run dev` - Start development server with hot-reload
 - `npm run start` - Start production server
 - `npm run test` - Run tests
 - `npm run lint` - Run ESLint
