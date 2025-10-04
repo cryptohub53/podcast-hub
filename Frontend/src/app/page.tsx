@@ -58,7 +58,11 @@ export default function Home() {
     // Add more podcasts here
   ];
 
-  const categories = ["All", ...new Set(podcasts.map((p) => p.category)), "❤️ Favorites"];
+  const categories = [
+    "All",
+    ...new Set(podcasts.map((p) => p.category)),
+    "❤️ Favorites",
+  ];
 
   // Filter + Sort
   let filteredPodcasts = podcasts.filter((podcast) => {
@@ -76,6 +80,11 @@ export default function Home() {
 
     return matchesSearch && matchesCategory;
   });
+
+  const handleCategoryChange = (newCategory: string) => {
+    setSelectedCategory(newCategory);
+    setVisibleCount(8); //set this to whatever you need the page size to be
+  };
 
   filteredPodcasts = [...filteredPodcasts].sort((a, b) => {
     if (sortOption === "alphabetical") return a.title.localeCompare(b.title);
@@ -125,42 +134,43 @@ export default function Home() {
   }, [filteredPodcasts.length]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
+    <div className='min-h-screen bg-gradient-to-br from-background via-background to-muted/20'>
+      <div className='fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none'></div>
 
-      <main className="relative container mx-auto px-4 py-8 md:px-6 lg:px-8">
+      <main className='relative container mx-auto px-4 py-8 md:px-6 lg:px-8'>
         <Header />
 
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className='max-w-7xl mx-auto space-y-8'>
           <SearchBar
             search={search}
             onSearchChange={setSearch}
             sortOption={sortOption}
             onSortChange={setSortOption}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            onCategoryChange={handleCategoryChange}
             categories={categories}
           />
 
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
+          <div className='flex items-center justify-between'>
+            <p className='text-sm text-muted-foreground'>
               {filteredPodcasts.length === 0
                 ? "No podcasts found"
-                : `Showing ${visiblePodcasts.length} of ${filteredPodcasts.length} podcast${
-                    filteredPodcasts.length === 1 ? "" : "s"
-                  }`}
-              {selectedCategory !== "All" && <span className="ml-1">in "{selectedCategory}"</span>}
+                : `Showing ${visiblePodcasts.length} of ${
+                    filteredPodcasts.length
+                  } podcast${filteredPodcasts.length === 1 ? "" : "s"}`}
+              {selectedCategory !== "All" && (
+                <span className='ml-1'>in "{selectedCategory}"</span>
+              )}
             </p>
           </div>
 
           {visiblePodcasts.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
               {visiblePodcasts.map((podcast, index) => (
                 <div
                   key={podcast.title}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
+                  className='animate-fade-in'
+                  style={{ animationDelay: `${index * 0.1}s` }}>
                   <PodcastCard
                     podcast={podcast}
                     isFavorite={favorites.includes(podcast.title)}
@@ -170,13 +180,15 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 animate-fade-in">
-              <div className="mb-6">
-                <Podcast className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">
-                  {selectedCategory === "❤️ Favorites" ? "No favorites yet" : "No podcasts found"}
+            <div className='text-center py-16 animate-fade-in'>
+              <div className='mb-6'>
+                <Podcast className='h-16 w-16 text-muted-foreground mx-auto mb-4' />
+                <h3 className='text-xl font-semibold mb-2'>
+                  {selectedCategory === "❤️ Favorites"
+                    ? "No favorites yet"
+                    : "No podcasts found"}
                 </h3>
-                <p className="text-muted-foreground max-w-md mx-auto">
+                <p className='text-muted-foreground max-w-md mx-auto'>
                   {selectedCategory === "❤️ Favorites"
                     ? "Start adding podcasts to your favorites by clicking the heart icon on any podcast card."
                     : "Try adjusting your search terms or browse different categories to find what you're looking for."}
