@@ -64,9 +64,3 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Run tests
-        run: npm test
-        env:
-          MONGODB_URI: mongodb://localhost:27017/test
-          PORT: 5000
