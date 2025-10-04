@@ -81,13 +81,14 @@ PORT=5000
 MONGODB_URI=mongodb://localhost:27017/podcast-hub
 ```
 
-## Stats
+## 📊 GitHub Stats
 
-[![Total Commits](https://img.shields.io/badge/Commits-143%2B-blue?style=for-the-badge)](https://github.com/cryptohub53/podcast-hub/commits)
-[![Contributors](https://img.shields.io/badge/Contributors-1-blueviolet?style=for-the-badge)](https://github.com/cryptohub53/podcast-hub/graphs/contributors)
-[![PRs Merged](https://img.shields.io/github/issues-pr-closed/skully-coder/shiksha-ai?style=for-the-badge&color=success)](https://github.com/cryptohub53/podcast-hub/pulls?q=is%3Apr+is%3Amerged)
-[![Issues Resolved](https://img.shields.io/badge/Issues%20Resolved-2-orange?style=for-the-badge)](https://github.com/cryptohub53/podcast-hub/issues?q=is%3Aissue+is%3Aclosed)
-[![GitHub Stars](https://img.shields.io/github/stars/skully-coder/shiksha-ai?style=for-the-badge&color=yellow)](https://github.com/cryptohub53/podcast-hub/stargazers)
+![Total Commits](https://img.shields.io/github/commit-activity/y/cryptohub53/podcast-hub?style=for-the-badge&label=Commits)
+![Contributors](https://img.shields.io/github/contributors/cryptohub53/podcast-hub?style=for-the-badge&color=blueviolet)
+![PRs Merged](https://img.shields.io/github/issues-pr-closed/cryptohub53/podcast-hub?style=for-the-badge&color=success)
+![Issues Resolved](https://img.shields.io/github/issues-closed/cryptohub53/podcast-hub?style=for-the-badge&color=orange)
+![GitHub Stars](https://img.shields.io/github/stars/cryptohub53/podcast-hub?style=for-the-badge&color=yellow)
+![Forks](https://img.shields.io/github/forks/cryptohub53/podcast-hub?style=for-the-badge&color=blue)
+![Repo Size](https://img.shields.io/github/repo-size/cryptohub53/podcast-hub?style=for-the-badge&color=red)
+![Last Commit](https://img.shields.io/github/last-commit/cryptohub53/podcast-hub?style=for-the-badge&color=brightgreen)
 [![Hacktoberfest Participation](https://img.shields.io/badge/Hacktoberfest-2025-blueviolet?style=for-the-badge&logo=hacktoberfest)](https://hacktoberfest.com)
-
-
