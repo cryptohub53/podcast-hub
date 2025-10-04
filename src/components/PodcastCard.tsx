@@ -58,18 +58,11 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           />
         </Button>
 
-<<<<<<< HEAD
-        {/* Category Badge */}
-        <Badge 
-          variant="secondary" 
-          className="absolute bottom-2 left-2 bg-primary/90 text-white/80 backdrop-blur-sm dark"
-=======
         {/* Category Badge (Purple Theme) */}
         <Badge
           className="absolute bottom-2 left-2 rounded-full px-3 py-1 text-xs font-medium 
                      bg-purple-500 text-white shadow-md 
                      hover:bg-purple-600 transition-colors duration-200"
->>>>>>> f32ec0d (feat: add purple theme for category badge, buttons, and title hover)
         >
         🎧 {podcast.category}
         </Badge>
@@ -90,7 +83,6 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           {podcast.description}
         </p>
 
-<<<<<<< HEAD
         <Button
           asChild
           variant="outline"
@@ -99,12 +91,6 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
           <a 
             href={podcast.url} 
             target="_blank" 
-=======
-        <Button asChild variant="outline" className="w-full group/button border-purple-300/50 hover:border-purple-600 hover:bg-purple-50">
-          <a
-            href={podcast.url}
-            target="_blank"
->>>>>>> f32ec0d (feat: add purple theme for category badge, buttons, and title hover)
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2"
           >
