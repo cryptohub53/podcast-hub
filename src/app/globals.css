@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+
+
+
 :root {
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
@@ -131,3 +134,5 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+
