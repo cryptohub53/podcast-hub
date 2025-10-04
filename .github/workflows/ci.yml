@@ -1,0 +1,42 @@
+name: CI Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      # ✅ Run ESLint
+      - name: Run ESLint
+        run: npm run lint --if-present
+
+      # ✅ Run TypeScript checks
+      - name: Run TypeScript
+        run: npm run type-check --if-present
+
+      # ✅ Build Next.js project
+      - name: Build project
+        run: npm run build
+
+      # ✅ Run tests
+      - name: Run tests
+        run: npm test --if-present
