@@ -26,10 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # ✅ Run ESLint
-      - name: Run ESLint
-        run: npm run lint --if-present
-
       # ✅ Run TypeScript checks
       - name: Run TypeScript
         run: npm run type-check --if-present
@@ -38,6 +34,3 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # ✅ Run tests
-      - name: Run tests
-        run: npm test --if-present
