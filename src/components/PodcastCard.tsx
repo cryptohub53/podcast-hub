@@ -61,7 +61,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
         {/* Category Badge */}
         <Badge 
           variant="secondary" 
-          className="absolute bottom-2 left-2 bg-primary/90 text-primary-foreground backdrop-blur-sm"
+          className="absolute bottom-2 left-2 bg-primary/90 text-white/80 backdrop-blur-sm dark"
         >
           {podcast.category}
         </Badge>
@@ -85,7 +85,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
         <Button
           asChild
           variant="outline"
-          className="w-full group/button"
+          className="group bg-background/50 border-orange-500/30 hover:bg-orange-500/10 hover:border-orange-500/50 transition-all duration-200"
         >
           <a 
             href={podcast.url} 
