@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node --esm src/server.ts",
-    "dev:watch": "nodemon --exec \"ts-node --esm\" src/server.ts",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean"
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "dev": "npm run build && nodemon dist/server.js",
+    "start": "node dist/server.js",
+    "seed": "ts-node src/utils/seed.ts",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -29,8 +30,10 @@
     "@types/express": "^5.0.3",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^24.6.2",
+    "@types/supertest": "^6.0.3",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "supertest": "^7.1.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }
