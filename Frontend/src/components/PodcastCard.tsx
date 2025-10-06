@@ -1,6 +1,7 @@
 "use client";
 
 import { Heart, ExternalLink, Clock } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -19,7 +20,10 @@ interface PodcastCardProps {
   onToggleFavorite: (title: string) => void;
 }
 
+import Link from "next/link";
+
 export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: PodcastCardProps) {
+  const router = useRouter();
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: "short",
@@ -27,10 +31,16 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
       year: "numeric",
     });
   };
+  
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation
+    onToggleFavorite(podcast.title);
+  };
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in bg-card/50 backdrop-blur-sm border-border/50">
-      <div className="relative overflow-hidden">
+    <Card
+      onClick={() => router.push(`/podcast/${encodeURIComponent(podcast.title)}`)} className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in bg-card/50 backdrop-blur-sm border-border/50">
+        <div className="relative overflow-hidden">
         <img
           src={podcast.image}
           alt={podcast.title}
@@ -40,7 +50,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
 
         {/* Favorite Button */}
         <Button
-          onClick={() => onToggleFavorite(podcast.title)}
+          onClick={handleFavoriteClick}
           variant="ghost"
           size="icon"
           className={cn(
@@ -84,19 +94,14 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
         </p>
 
         <Button
-          asChild
           variant="outline"
           className="group bg-background/50 border-orange-500/30 hover:bg-orange-500/10 hover:border-orange-500/50 transition-all duration-200"
+          onClick={() => window.open(podcast.url, '_blank', 'noopener,noreferrer')}
         >
-          <a 
-            href={podcast.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2"
-          >
+          <span className="flex items-center justify-center gap-2">
             Listen Now
             <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1 text-purple-600" />
-          </a>
+          </span>
         </Button>
       </CardContent>
     </Card>
