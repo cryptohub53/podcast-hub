@@ -1,22 +1,39 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
-  "type": "module",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "build": "echo \"No build step required for backend\""
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "dev": "npm run build && nodemon dist/server.js",
+    "start": "node dist/server.js",
+    "seed": "ts-node src/utils/seed.ts",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "type": "commonjs",
   "dependencies": {
+    "@faker-js/faker": "^10.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mongoose": "^8.19.0",
-    "nodemon": "^3.1.10"
+    "mongoose-paginate-v2": "^1.9.1",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^24.6.2",
+    "@types/supertest": "^6.0.3",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }
