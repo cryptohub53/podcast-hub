@@ -3,10 +3,9 @@ import dotenv from "dotenv";
 import { faker } from "@faker-js/faker";
 import { User, UserDocument, Episode, EpisodeDocument, Podcast, PodcastDocument  } from "../models/index";
 import { UserRole, PodcastCategory } from "./constants";
+import validatedEnv from "./envSchema";
 
-dotenv.config();
-
-const MONGO_URI = "mongodb://localhost:27017";
+const MONGO_URI = validatedEnv.MONGODB_URI;
 
 async function seed() {
   try {

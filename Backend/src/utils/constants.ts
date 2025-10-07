@@ -1,11 +1,11 @@
 // User Types Enum
-export enum UserRole {
+enum UserRole {
   USER = "user",
   ADMIN = "admin",
 }
 
 // Podcast Types Enum
-export enum PodcastCategory {
+enum PodcastCategory {
   TECHNOLOGY = "Technology",
   EDUCATION = "Education",
   HEALTH = "Health",
@@ -14,10 +14,17 @@ export enum PodcastCategory {
   OTHER = "Other",
 }
 
-// Constants object i.e read only status 
-export const Constants = {
+enum Status {
+  PENDING = "pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+}
+
+// Constants object i.e read only status
+const Constants = {
   UserRole,
   PodcastCategory,
-} as const; 
+  Status,
+} as const;
 
 export default Constants;

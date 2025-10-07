@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { UserRole } from "../utils/constants";
+import Constants from "../utils/constants";
 
 // Interface for User document
 export interface UserDocument extends Document {
@@ -10,7 +10,7 @@ export interface UserDocument extends Document {
   favorites: Types.ObjectId[];
   recentlyPlayed: Types.ObjectId[];
   avatarUrl?: string;
-  role: UserRole;
+  role: typeof Constants.UserRole[keyof typeof Constants.UserRole];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,7 +23,7 @@ export interface UserInput {
   favorites?: Types.ObjectId[];
   recentlyPlayed?: Types.ObjectId[];
   avatarUrl?: string;
-  role?: UserRole;
+  role?: typeof Constants.UserRole[keyof typeof Constants.UserRole];
 }
 
 // User Schema
@@ -78,8 +78,8 @@ const userSchema = new Schema<UserDocument>(
     },
     role: {
       type: String,
-      enum: Object.values(UserRole),
-      default: UserRole.USER,
+      enum: Object.values(Constants.UserRole),
+      default: Constants.UserRole.USER,
     },
   },
   { 

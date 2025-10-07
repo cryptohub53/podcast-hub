@@ -1,6 +1,9 @@
 import mongoose, { Document, PaginateModel, Schema, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { PodcastCategory } from "../utils/constants";
+import Constants from "../utils/constants";
+import { EpisodeDocument } from "./episode";
+import { UserDocument } from "./user";
+
 
 // Interface for Podcast document
 export interface PodcastDocument extends Document {
@@ -8,10 +11,11 @@ export interface PodcastDocument extends Document {
   title: string;
   description: string;
   author: string;
-  category: PodcastCategory;
+  category: typeof Constants.PodcastCategory[keyof typeof Constants.PodcastCategory];
   coverImageUrl?: string;
-  episodes: Types.ObjectId[];
-  followers: Types.ObjectId[];
+  episodes: Types.ObjectId[] & EpisodeDocument[];
+  followers: Types.ObjectId[] & UserDocument[];
+  status: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,10 +25,10 @@ export interface PodcastInput {
   title: string;
   description: string;
   author: string;
-  category?: PodcastCategory;
+  category?: typeof Constants.PodcastCategory[keyof typeof Constants.PodcastCategory];
   coverImageUrl?: string;
-  episodes?: Types.ObjectId[];
-  followers?: Types.ObjectId[];
+  episodes?: Types.ObjectId[] & EpisodeDocument[];
+  followers?: Types.ObjectId[] & UserDocument[];
 }
 
 // Podcast Schema
@@ -53,8 +57,8 @@ const podcastSchema = new Schema<PodcastDocument>(
     },
     category: {
       type: String,
-      enum: Object.values(PodcastCategory),
-      default: PodcastCategory.OTHER,
+      enum: Object.values(Constants.PodcastCategory),
+      default: Constants.PodcastCategory.OTHER,
     },
     coverImageUrl: {
       type: String,
@@ -67,7 +71,7 @@ const podcastSchema = new Schema<PodcastDocument>(
     },
     episodes: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId ,
         ref: "Episode",
         default: [],
       },
@@ -79,6 +83,11 @@ const podcastSchema = new Schema<PodcastDocument>(
         default: [],
       },
     ],
+    status: {
+      type: String,
+      enum: Object.values(Constants.Status),
+      default: Constants.Status.PENDING,
+    },
   },
   { 
     timestamps: true,
