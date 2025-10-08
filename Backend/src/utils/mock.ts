@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { UserDocument, PodcastDocument, EpisodeDocument } from "../models";
-import { UserRole, PodcastCategory } from "../utils/constants";
+import { UserRole, PodcastCategory, Status } from "../utils/constants";
 
 // -------------------- USERS --------------------
 export const mockUsers: UserDocument[] = [
@@ -41,6 +41,7 @@ export const mockPodcasts: PodcastDocument[] = [
     coverImageUrl: "https://example.com/cover-tech.jpg",
     episodes: [],
     followers: [mockUsers[0]._id, mockUsers[1]._id],
+    status: Status.APPROVED,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as unknown as PodcastDocument,
@@ -53,6 +54,7 @@ export const mockPodcasts: PodcastDocument[] = [
     coverImageUrl: "https://example.com/cover-startup.jpg",
     episodes: [],
     followers: [mockUsers[0]._id],
+    status: Status.APPROVED,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as unknown as PodcastDocument,
@@ -65,6 +67,7 @@ export const mockPodcasts: PodcastDocument[] = [
     coverImageUrl: "https://example.com/cover-science.jpg",
     episodes: [],
     followers: [mockUsers[1]._id],
+    status: Status.APPROVED,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as unknown as PodcastDocument,
@@ -78,6 +81,7 @@ function createMockEpisodes(count: number, podcastId: Types.ObjectId): EpisodeDo
     _id: new Types.ObjectId(),
     title: `Episode ${i + 1}`,
     description: `Description for episode ${i + 1}`,
+    audioKey: `audio/${podcastId}/${i + 1}.mp3`,
     audioUrl: `https://example.com/audio/${podcastId}/${i + 1}.mp3`,
     duration: 180 + i * 10,
     podcast: podcastId,
@@ -96,3 +100,15 @@ export const mockEpisodesPodcast3 = createMockEpisodes(15, mockPodcasts[2]._id);
 mockPodcasts[0].episodes = mockEpisodesPodcast1.map(e => e._id);
 mockPodcasts[1].episodes = mockEpisodesPodcast2.map(e => e._id);
 mockPodcasts[2].episodes = mockEpisodesPodcast3.map(e => e._id);
+
+export const generateUploadUrl = async () => {
+  return {
+    url: "https://s3.amazonaws.com/fakebucket/fakefile.mp3",
+    key: `pending/fake-key`,
+  };
+};
+
+
+export const moveObjectToPermanentBucket = async (key: string) => {
+  return `https://example.com/perm/${key}`;
+};

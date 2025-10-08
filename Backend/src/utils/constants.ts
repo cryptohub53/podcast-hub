@@ -20,11 +20,9 @@ enum Status {
   REJECTED = "rejected",
 }
 
-// Constants object i.e read only status
-const Constants = {
+
+export {
   UserRole,
   PodcastCategory,
   Status,
-} as const;
-
-export default Constants;
+};

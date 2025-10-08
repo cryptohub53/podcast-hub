@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index";
 import { PaginateResult } from "mongoose";
 import mongoose from "mongoose";
-import Constants from "../utils/constants";
+import { PodcastCategory, Status, UserRole } from "../utils/constants";
 import { moveObjectToPermanentBucket } from "../utils/aws";
 import { catchAsync } from "../middlewares/errorMiddleware";
 import { NotFoundError, ForbiddenError, ValidationError, AWSError } from "../utils/error";
@@ -123,7 +123,7 @@ const requestToUploadPodcastByUser = catchAsync(async (req: Request, res: Respon
     author,
     category,
     coverImageUrl,
-    status: Constants.Status.PENDING,
+    status: Status.PENDING,
   });
 
   res.status(201).json({
@@ -153,7 +153,7 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
     const { status, adminId } = req.body;
 
     // Validate status
-    const validStatuses = [Constants.Status.APPROVED, Constants.Status.REJECTED];
+    const validStatuses = [Status.APPROVED, Status.REJECTED];
     if (!validStatuses.includes(status)) {
       throw new ValidationError("Invalid status. Must be 'approved' or 'rejected'");
     }
@@ -164,7 +164,7 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
       throw new NotFoundError("Admin not found");
     }
 
-    if (admin.role !== Constants.UserRole.ADMIN) {
+    if (admin.role !== UserRole.ADMIN) {
       throw new ForbiddenError("Access denied. Admin role required");
     }
 
@@ -178,7 +178,7 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
     }
 
     // If approved, move all episodes from TEMP to PERM bucket
-    if (status === Constants.Status.APPROVED) {
+    if (status === Status.APPROVED) {
       for (const episode of podcast.episodes) {
         if (episode.audioKey) {
           try {
@@ -194,9 +194,9 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
           }
         }
       }
-      podcast.status = Constants.Status.APPROVED;
-    } else if (status === Constants.Status.REJECTED) {
-      podcast.status = Constants.Status.REJECTED;
+      podcast.status = Status.APPROVED;
+    } else if (status === Status.REJECTED) {
+      podcast.status = Status.REJECTED;
     }
 
     await podcast.save({ session });

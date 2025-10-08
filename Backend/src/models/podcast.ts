@@ -1,8 +1,6 @@
 import mongoose, { Document, PaginateModel, Schema, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import Constants from "../utils/constants";
-import { EpisodeDocument } from "./episode";
-import { UserDocument } from "./user";
+import { PodcastCategory, Status } from "../utils/constants";
 
 
 // Interface for Podcast document
@@ -11,11 +9,11 @@ export interface PodcastDocument extends Document {
   title: string;
   description: string;
   author: string;
-  category: typeof Constants.PodcastCategory[keyof typeof Constants.PodcastCategory];
+  category: PodcastCategory;
   coverImageUrl?: string;
-  episodes: Types.ObjectId[] & EpisodeDocument[];
-  followers: Types.ObjectId[] & UserDocument[];
-  status: string;
+  episodes: Types.ObjectId[];
+  followers: Types.ObjectId[];
+  status: Status;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,10 +23,11 @@ export interface PodcastInput {
   title: string;
   description: string;
   author: string;
-  category?: typeof Constants.PodcastCategory[keyof typeof Constants.PodcastCategory];
+  category?: PodcastCategory;
   coverImageUrl?: string;
-  episodes?: Types.ObjectId[] & EpisodeDocument[];
-  followers?: Types.ObjectId[] & UserDocument[];
+  episodes?: Types.ObjectId[];
+  followers?: Types.ObjectId[];
+  status?: Status;
 }
 
 // Podcast Schema
@@ -57,8 +56,8 @@ const podcastSchema = new Schema<PodcastDocument>(
     },
     category: {
       type: String,
-      enum: Object.values(Constants.PodcastCategory),
-      default: Constants.PodcastCategory.OTHER,
+      enum: Object.values(PodcastCategory),
+      default: PodcastCategory.OTHER,
     },
     coverImageUrl: {
       type: String,
@@ -85,8 +84,8 @@ const podcastSchema = new Schema<PodcastDocument>(
     ],
     status: {
       type: String,
-      enum: Object.values(Constants.Status),
-      default: Constants.Status.PENDING,
+      enum: Object.values(Status),
+      default: Status.PENDING,
     },
   },
   { 

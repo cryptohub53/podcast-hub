@@ -20,7 +20,7 @@ podcastRouter.get("/search/filter", podcastSearchAndFilterByTitleOrCategory);
 podcastRouter.get("/:id", getPodcastById);
 
 // User routes
-podcastRouter.post("/", requestToUploadPodcastByUser);
+podcastRouter.post("/request-upload", requestToUploadPodcastByUser);
 podcastRouter.post("/:id/episodes", addEpisodeToPodcast);
 
 // Admin routes
