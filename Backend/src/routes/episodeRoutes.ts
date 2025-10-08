@@ -5,7 +5,6 @@ const {
   getAllEpisodes, 
   getEpisodeById, 
   requestForPreSignedUrlForEpisode,
-  addEpisodeToPodcast 
 } = episodeController;
 
 const episodeRouter = Router();

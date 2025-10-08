@@ -27,6 +27,8 @@ describe("Episode API Endpoints", () => {
       expect(res.body.totalEpisodes).toBe(mockEpisodesPodcast1.length);
       expect(res.body.episodes[0].title).toBe(mockEpisodesPodcast1[0].title);
     });
+
+    // TODO: Add tests for error cases
   });
 
   // ---------------- GET /episodes/:id ----------------
@@ -40,6 +42,8 @@ describe("Episode API Endpoints", () => {
       expect(res.body.status).toBe("success");
       expect(res.body.data.episode.title).toBe(mockEpisodesPodcast1[0].title);
     });
+
+    // TODO: Add tests for error cases
   });
 
   // ---------------- POST /:id/episodes ----------------
@@ -70,6 +74,8 @@ describe("Episode API Endpoints", () => {
       expect(res.body.status).toBe("success");
       expect(res.body.data.episode.title).toBe("New Episode");
     });
+
+    // TODO: Add tests for error cases
   });
 
   // ---------------- POST /episodes/upload-url ----------------
@@ -88,4 +94,6 @@ describe("Episode API Endpoints", () => {
       expect(res.body.data.key).toBe("pending/fake-key");
     });
   });
+
+  // TODO: Add tests for error cases
 });     

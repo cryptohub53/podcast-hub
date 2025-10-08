@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index";
 import { PaginateResult } from "mongoose";
 import mongoose from "mongoose";
-import { PodcastCategory, Status, UserRole } from "../utils/constants";
+import { Status, UserRole } from "../utils/constants";
 import { moveObjectToPermanentBucket } from "../utils/aws";
 import { catchAsync } from "../middlewares/errorMiddleware";
 import { NotFoundError, ForbiddenError, ValidationError, AWSError } from "../utils/error";
@@ -157,7 +157,9 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
     if (!validStatuses.includes(status)) {
       throw new ValidationError("Invalid status. Must be 'approved' or 'rejected'");
     }
-
+    if (!adminId) {
+      throw new ValidationError("Admin ID is required");
+    }
     // Check admin exists and has admin role
     const admin = await User.findById(adminId);
     if (!admin) {

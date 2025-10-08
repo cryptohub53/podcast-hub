@@ -43,7 +43,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api/v1', router);
 
 // 404 handler - must be after all routes
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   next(new NotFoundError(`Route ${req.originalUrl} not found`));
 });
 

@@ -29,6 +29,7 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.totalPodcasts).toBe(mockPodcasts.length);
       expect(res.body.podcasts[0].title).toBe(mockPodcasts[0].title);
     });
+    // TODO: Add tests for error cases
   });
 
   // ---------------- GET /podcasts/:id ----------------
@@ -111,6 +112,7 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.totalResults).toBe(0);
       expect(res.body.podcasts).toEqual([]);
     });
+    // TODO: Add tests for error cases
   });
 
   // ---------------- POST /podcasts/request-upload ----------------
@@ -134,6 +136,7 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.status).toBe("success");
       expect(res.body.data.podcast.title).toBe(mockPodcasts[0].title);
     });
+    // TODO: Add tests for error cases
   });
 
   // ---------------- PATCH /podcasts/:id/status ----------------
@@ -188,4 +191,6 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.data.podcast.title).toBe(podcast.title);
     });
   });
+
+  // TODO: Add tests for error cases
 });

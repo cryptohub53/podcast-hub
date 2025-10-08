@@ -18,7 +18,7 @@ const {
   AWS_PREM_BUCKET_NAME,
 } = validatedEnv;
 
-// ✅ Initialize S3 client using secure credentials
+// Initialize S3 client using secure credentials
 const s3 = new S3({
   region: AWS_REGION,
   credentials: {
@@ -76,7 +76,7 @@ async function generateUploadUrl(
  */
 async function moveObjectToPermanentBucket(key: string): Promise<string> {
   if (!AWS_TEMP_BUCKET_NAME || !AWS_PREM_BUCKET_NAME) {
-    throw new Error("❌ Bucket names are not defined in environment variables");
+    throw new Error("Bucket names are not defined in environment variables");
   }
 
   // Compute the new key path (publicly accessible version)
@@ -89,22 +89,13 @@ async function moveObjectToPermanentBucket(key: string): Promise<string> {
         CopySource: `${AWS_TEMP_BUCKET_NAME}/${key}`,
         Bucket: AWS_PREM_BUCKET_NAME,
         Key: newKey,
-        ACL: "public-read", // make file publicly accessible
       })
       .promise();
 
-    // Step 2 (optional): Delete the original file from the temp bucket
-    await s3
-      .deleteObject({
-        Bucket: AWS_TEMP_BUCKET_NAME,
-        Key: key,
-      })
-      .promise();
-
-    // Step 3: Return the public URL of the file
+    // Step 2: Return the public URL of the file
     return `https://${AWS_PREM_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${newKey}`;
   } catch (error) {
-    console.error("❌ Error moving object to permanent bucket:", error);
+    console.error(" Error moving object to permanent bucket:", error);
     throw new Error("Failed to move object to permanent bucket");
   }
 }
