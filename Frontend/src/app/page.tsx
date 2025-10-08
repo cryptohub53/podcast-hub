@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Podcast } from "lucide-react";
-import DarkModeToggle from "../components/DarkModeToggle";
-import Header from "../components/Header";
+import { Headphones, Heart } from "lucide-react";
 import SearchBar from "../components/SearchBar";
 import PodcastCard from "../components/PodcastCard";
 import Footer from "../components/Footer";
 import DiscordModal from "../components/DiscordModal";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -148,9 +147,7 @@ export default function Home() {
       <div className='fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none'></div>
 
       <main className='relative container mx-auto px-4 py-8 md:px-6 lg:px-8'>
-        <Header />
-
-        <div className='max-w-7xl mx-auto space-y-8'>
+        <div className='max-w-7xl mx-auto space-y-8 pt-8'>
           <SearchBar
             search={search}
             onSearchChange={setSearch}
@@ -192,7 +189,7 @@ export default function Home() {
           ) : (
             <div className='text-center py-16 animate-fade-in'>
               <div className='mb-6'>
-                <Podcast className='h-16 w-16 text-muted-foreground mx-auto mb-4' />
+                <Headphones className='h-16 w-16 text-muted-foreground mx-auto mb-4' />
                 <h3 className='text-xl font-semibold mb-2'>
                   {selectedCategory === "❤️ Favorites"
                     ? "No favorites yet"
@@ -208,7 +205,6 @@ export default function Home() {
           )}
         </div>
 
-        <DarkModeToggle />
       </main>
 
       <Footer onDiscordClick={() => setShowDiscordModal(true)} />
