@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/ui/share-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { getPodcastsById } from "@/api/services/podcastService";
+import { Podcasts } from "@/types/podcast";
 
 interface PodcastData {
   title: string;
@@ -29,8 +31,9 @@ export default function PodcastDetailsPage({
 }: {
   params: Promise<{ podcastId: string }>;
 }) {
+
   const resolvedParams = use(params);
-  const [podcast, setPodcast] = useState<PodcastData | null>(null);
+  const [podcast, setPodcast] = useState<Podcasts | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -38,36 +41,17 @@ export default function PodcastDetailsPage({
   useEffect(() => {
     // Decode the podcast title from the URL
     const decodedTitle = decodeURIComponent(resolvedParams.podcastId);
-    
+    console.log(decodedTitle)
     // Simulated API call
-    setPodcast({
-      title: "Syntax",
-      category: "Web Development",
-      description: "A podcast about web development, hosted by Wes Bos and Scott Tolinski. They cover everything from JavaScript frameworks to career advice. Join them for in-depth discussions about web development, from the basics to the advanced topics that will help you level up your skills.",
-      url: "https://syntax.fm",
-      image: "https://i0.wp.com/www.lemonproductions.ca/wp-content/uploads/2021/11/Syntax-podcast.jpg?fit=1200%2C900&ssl=1",
-      timestamp: "2024-09-01",
-      episodes: [
-        {
-          title: "TypeScript Best Practices",
-          duration: "1:15:00",
-          date: "2024-09-01",
-          description: "Deep dive into TypeScript best practices and common pitfalls to avoid."
-        },
-        {
-          title: "Modern CSS Techniques",
-          duration: "1:02:30",
-          date: "2024-08-25",
-          description: "Exploring the latest CSS features and how to use them effectively."
-        },
-        {
-          title: "React Performance Optimization",
-          duration: "58:45",
-          date: "2024-08-18",
-          description: "Tips and tricks for optimizing React applications for better performance."
-        }
-      ]
-    });
+    async function fetchPodcastsById() {
+      try {
+        const data = await getPodcastsById(decodedTitle)
+        setPodcast(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchPodcastsById()
 
     const savedFavorites = localStorage.getItem("favorites");
     if (savedFavorites) {
@@ -81,7 +65,7 @@ export default function PodcastDetailsPage({
   // Put this inside your component (client component) so it can access `podcast`
 const handleShare = async () => {
   try {
-    const url = typeof window !== "undefined" ? window.location.href : podcast?.url ?? "";
+    const url = typeof window !== "undefined" ? window.location.href : podcast?.coverImageUrl ?? "";
     const shareData: ShareData = {
       title: podcast?.title ?? "Podcast",
       text: podcast ? `Check out ${podcast.title}` : "Check out this podcast",
@@ -104,7 +88,7 @@ const handleShare = async () => {
     console.error("Share error:", err);
     // Final fallback: try clipboard if native share failed
     try {
-      const url = typeof window !== "undefined" ? window.location.href : podcast?.url ?? "";
+      const url = typeof window !== "undefined" ? window.location.href : podcast?.coverImageUrl ?? "";
       await navigator.clipboard.writeText(url);
       alert("Link copied to clipboard!");
     } catch (clipErr) {
@@ -168,7 +152,7 @@ const handleShare = async () => {
         <div className="relative rounded-2xl overflow-hidden mb-12">
           <div className="absolute inset-0">
             <img
-              src={podcast.image}
+              src={podcast.coverImageUrl}
               alt={podcast.title}
               className="w-full h-full object-cover filter blur-sm opacity-50"
             />
@@ -179,7 +163,7 @@ const handleShare = async () => {
             {/* Podcast Image */}
             <div className="w-64 h-64 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
               <img
-                src={podcast.image}
+                src={podcast.coverImageUrl}
                 alt={podcast.title}
                 className="w-full h-full object-cover"
               />
@@ -220,7 +204,7 @@ const handleShare = async () => {
                 <Button
                   asChild
                   className="bg-purple-500 hover:bg-purple-600  min-w-[160px]"
-                  onClick={() => window.open(podcast.url, '_blank')}
+                  onClick={() => window.open(podcast.coverImageUrl, '_blank')}
                 >
                     Listen Now
                     <ExternalLink className="ml-2 h-4 w-4" />
@@ -270,7 +254,7 @@ const handleShare = async () => {
                         <Clock className="mr-1 h-4 w-4" />
                         {episode.duration}
                       </span>
-                      <span>{formatDate(episode.date)}</span>
+                      <span>{formatDate(episode.createdAt)}</span>
                       <Button
                         variant="ghost"
                         size="sm"
