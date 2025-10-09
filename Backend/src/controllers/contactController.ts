@@ -36,7 +36,7 @@ export const sendContactEmail = async (req: Request, res: Response) => {
     // Send mail with defined transport object
     const info = await transporter.sendMail({
       from: `"${name}" <${email}>`,
-      to: 'your-email@example.com', // Replace with your email
+      to: process.env.CONTACT_EMAIL_RECIPIENT || 'your-email@example.com', // Replace with your email
       subject: `New Contact Form Submission from ${name}`,
       text: message,
       html: `

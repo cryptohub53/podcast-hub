@@ -84,12 +84,14 @@ export default function Navbar() {
               className="flex items-center gap-2 sm:gap-3 group relative z-10"
               onClick={(e) => scrollToTop(e, '/')}
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-lg group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110">
-                <Headphones className="w-5 h-5 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform" />
-              </div>
-              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Podcast Hub
-              </span>
+              <Image 
+                src="/podcast-hub-logo.png" 
+                alt="Podcast Hub Logo" 
+                width={180}
+                height={60}
+                className="h-10 sm:h-12 w-auto transition-all duration-300 group-hover:scale-105"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
