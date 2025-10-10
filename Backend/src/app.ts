@@ -1,6 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import router from "./routes";
+import { globalErrorHandler } from "./middlewares/errorMiddleware";
+import { NotFoundError } from "./utils/error";
 
 
 const app: Express = express();
@@ -40,25 +42,12 @@ app.get('/health', (req: Request, res: Response) => {
 // API routes
 app.use('/api/v1', router);
 
-// 404 handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`,
-  });
+// 404 handler - must be after all routes
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new NotFoundError(`Route ${req.originalUrl} not found`));
 });
 
-// Global error handler
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error('Global error handler:', error);
-  
-  res.status(500).json({
-    success: false,
-    message: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : error.message,
-    ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
-  });
-});
+// Global error handler - must be last middleware
+app.use(globalErrorHandler);
 
 export default app;

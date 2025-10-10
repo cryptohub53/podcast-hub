@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import { faker } from "@faker-js/faker";
-import { User, UserDocument, Episode, EpisodeDocument, Podcast, PodcastDocument  } from "../models/index";
-import { UserRole, PodcastCategory } from "./constants";
+import { User, UserInput, Episode, Podcast, PodcastInput, EpisodeInput  } from "../models/index";
+import { UserRole, PodcastCategory, Status } from "./constants";
+import validatedEnv from "./envSchema";
 
-dotenv.config();
-
-const MONGO_URI = "mongodb://localhost:27017";
+const MONGO_URI = validatedEnv.MONGODB_URI;
 
 async function seed() {
   try {
@@ -25,7 +23,7 @@ async function seed() {
     console.log("🧹 Old data cleared");
 
     // Create users
-    const usersData: Partial<UserDocument>[] = [
+    const usersData: Partial<UserInput>[] = [
       {
         name: "Alice Johnson",
         email: "alice@example.com",
@@ -50,7 +48,7 @@ async function seed() {
     console.log(`Created ${users.length} users`);
 
     // Create podcasts
-    const podcastsData: Partial<PodcastDocument>[] = [
+    const podcastsData: Partial<PodcastInput>[] = [
       {
         title: "Tech Minds",
         author: "Ethan Ray",
@@ -58,6 +56,8 @@ async function seed() {
         category: PodcastCategory.TECHNOLOGY,
         coverImageUrl: faker.image.urlLoremFlickr({ category: "technology" }),
         episodes: [],
+        followers: [users[0]._id],
+        status: Status.APPROVED,
       },
       {
         title: "Health Matters",
@@ -66,6 +66,8 @@ async function seed() {
         category: PodcastCategory.HEALTH,
         coverImageUrl: faker.image.urlLoremFlickr({ category: "health" }),
         episodes: [],
+        followers: [users[1]._id],
+        status: Status.APPROVED,
       },
       {
         title: "Business Unplugged",
@@ -74,6 +76,8 @@ async function seed() {
         category: PodcastCategory.BUSINESS,
         coverImageUrl: faker.image.urlLoremFlickr({ category: "business" }),
         episodes: [],
+        followers: [users[0]._id, users[1]._id],
+        status: Status.APPROVED,
       },
     ];
 
@@ -93,13 +97,15 @@ async function seed() {
         continue;
       }
 
-      const episodesData: Partial<EpisodeDocument>[] = Array.from({ length: count }).map(() => ({
+      const episodesData: Partial<EpisodeInput>[] = Array.from({ length: count }).map(() => ({
         title: faker.lorem.words(4),
         description: faker.lorem.paragraph(),
+        audioKey: `audio/${podcast._id}/${faker.word.noun()}.mp3`,
         audioUrl: `https://cdn.podcastapp.com/${faker.word.noun()}.mp3`,
         duration: faker.number.int({ min: 60, max: 3600 }),
         podcast: podcast._id,
         publishedAt: faker.date.past(),
+        playCount: faker.number.int({ min: 0, max: 10000 }),
       }));
 
       const episodes = await Episode.insertMany(episodesData);

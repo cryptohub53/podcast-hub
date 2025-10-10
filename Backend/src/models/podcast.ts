@@ -1,6 +1,7 @@
 import mongoose, { Document, PaginateModel, Schema, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { PodcastCategory } from "../utils/constants";
+import { PodcastCategory, Status } from "../utils/constants";
+
 
 // Interface for Podcast document
 export interface PodcastDocument extends Document {
@@ -12,6 +13,7 @@ export interface PodcastDocument extends Document {
   coverImageUrl?: string;
   episodes: Types.ObjectId[];
   followers: Types.ObjectId[];
+  status: Status;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,6 +27,7 @@ export interface PodcastInput {
   coverImageUrl?: string;
   episodes?: Types.ObjectId[];
   followers?: Types.ObjectId[];
+  status?: Status;
 }
 
 // Podcast Schema
@@ -67,7 +70,7 @@ const podcastSchema = new Schema<PodcastDocument>(
     },
     episodes: [
       {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId ,
         ref: "Episode",
         default: [],
       },
@@ -79,6 +82,11 @@ const podcastSchema = new Schema<PodcastDocument>(
         default: [],
       },
     ],
+    status: {
+      type: String,
+      enum: Object.values(Status),
+      default: Status.PENDING,
+    },
   },
   { 
     timestamps: true,

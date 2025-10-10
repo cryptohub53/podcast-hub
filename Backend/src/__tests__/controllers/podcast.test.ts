@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
-import app from "../../app";
-import { Podcast } from "../../models";
-import { mockPodcasts, mockEpisodesPodcast1 } from "../../utils/mock";
+import app from "../testApp";
+import { Podcast, User } from "../../models";
+import { mockPodcasts, mockEpisodesPodcast1, mockUsers } from "../../utils/mock";
+import mongoose from "mongoose";
 
 beforeEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 
@@ -28,6 +29,7 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.totalPodcasts).toBe(mockPodcasts.length);
       expect(res.body.podcasts[0].title).toBe(mockPodcasts[0].title);
     });
+    // TODO: Add tests for error cases
   });
 
   // ---------------- GET /podcasts/:id ----------------
@@ -41,8 +43,9 @@ describe("Podcast API Endpoints", () => {
       const res = await request(app).get(`/api/v1/podcasts/${mockPodcasts[0]._id}`);
 
       expect(res.status).toBe(200);
-      expect(res.body.title).toBe(mockPodcasts[0].title);
-      expect(res.body.episodes.length).toBe(mockEpisodesPodcast1.length);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data.podcast.title).toBe(mockPodcasts[0].title);
+      expect(res.body.data.podcast.episodes.length).toBe(mockEpisodesPodcast1.length);
     });
 
     it("should return 404 if podcast not found", async () => {
@@ -109,5 +112,85 @@ describe("Podcast API Endpoints", () => {
       expect(res.body.totalResults).toBe(0);
       expect(res.body.podcasts).toEqual([]);
     });
+    // TODO: Add tests for error cases
   });
+
+  // ---------------- POST /podcasts/request-upload ----------------
+  describe("POST /podcasts/request-upload", () => {
+    it("should create a new podcast request", async () => {
+      vi.spyOn(User, "findById").mockResolvedValue(mockUsers[0] as any);
+      vi.spyOn(Podcast, "create").mockResolvedValue(mockPodcasts[0] as any);
+
+      const res = await request(app)
+        .post("/api/v1/podcasts/request-upload")
+        .send({
+          title: "New Podcast",
+          description: "Description",
+          author: "Author",
+          category: "Technology",
+          coverImageUrl: "https://example.com/cover.jpg",
+          userId: mockUsers[0]._id,
+        });
+
+      expect(res.status).toBe(201);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data.podcast.title).toBe(mockPodcasts[0].title);
+    });
+    // TODO: Add tests for error cases
+  });
+
+  // ---------------- PATCH /podcasts/:id/status ----------------
+  describe("PATCH /podcasts/:id/status", () => {
+    const admin = mockUsers[1];
+    const podcast = mockPodcasts[0];
+
+    it("should approve a podcast request", async () => {
+      // Mock mongoose session
+      const commitTransaction = vi.fn();
+      const abortTransaction = vi.fn();
+      const endSession = vi.fn();
+      const startTransaction = vi.fn();
+
+      vi.spyOn(mongoose, "startSession").mockResolvedValue({
+        startTransaction,
+        commitTransaction,
+        abortTransaction,
+        endSession,
+      } as any);
+
+      // Mock DB calls
+      vi.spyOn(User, "findById").mockResolvedValue(admin as any);
+
+      // Create mock episodes with save method
+      const mockEpisodesWithSave = mockEpisodesPodcast1.map(episode => ({
+        ...episode,
+        save: vi.fn().mockResolvedValue(true),
+      }));
+
+      const mockPodcastWithMethods = {
+        ...podcast,
+        episodes: mockEpisodesWithSave,
+        save: vi.fn().mockResolvedValue(true),
+      };
+
+      vi.spyOn(Podcast, "findById").mockReturnValue({
+        populate: vi.fn().mockReturnValue({
+          session: vi.fn().mockResolvedValue(mockPodcastWithMethods),
+        }),
+      } as any);
+
+      const res = await request(app)
+        .patch(`/api/v1/podcasts/${podcast._id}/status`)
+        .send({
+          status: "approved",
+          adminId: admin._id,
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data.podcast.title).toBe(podcast.title);
+    });
+  });
+
+  // TODO: Add tests for error cases
 });
