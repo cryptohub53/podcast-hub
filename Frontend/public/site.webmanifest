@@ -1,0 +1,16 @@
+{
+  "name": "Podcast Hub",
+  "short_name": "Podcast Hub",
+  "description": "Discover, explore, and enjoy your favorite podcasts",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#a855f7",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

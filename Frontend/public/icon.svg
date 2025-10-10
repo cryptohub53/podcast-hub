@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <circle cx="64" cy="64" r="64" fill="url(#gradient)"/>
+  
+  <!-- Microphone icon -->
+  <ellipse cx="64" cy="55" rx="18" ry="28" fill="white"/>
+  
+  <!-- Microphone grille lines -->
+  <line x1="52" y1="45" x2="76" y2="45" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="52" x2="76" y2="52" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="59" x2="76" y2="59" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="66" x2="76" y2="66" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Microphone stand -->
+  <line x1="64" y1="83" x2="64" y2="100" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <line x1="52" y1="100" x2="76" y2="100" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
