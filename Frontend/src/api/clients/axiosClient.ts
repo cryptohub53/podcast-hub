@@ -7,8 +7,5 @@ const axiosClient = axios.create({
     headers: {'Content-Type' : 'application/json'}
 })
 
-// axiosClient.interceptors.request.use(config => {
-//     const token
-// })
 
 export default axiosClient
