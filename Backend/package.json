@@ -7,8 +7,8 @@
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "dev": "npm run build && nodemon dist/server.js",
-    "start": "node dist/server.js",
+    "dev": "npm run build && nodemon dist/server.ts",
+    "start": "node dist/server.ts",
     "seed": "ts-node src/utils/seed.ts",
     "test": "vitest run"
   },
