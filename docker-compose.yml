@@ -1,0 +1,43 @@
+
+
+services:
+  frontend:
+    build: ./Frontend
+    container_name: app-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:5000
+    networks:
+      - app-network
+
+  backend:
+    build: ./Backend
+    container_name: app-backend
+    ports:
+      - "5001:5000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/podcast-hub
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:6.0
+    container_name: app-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
