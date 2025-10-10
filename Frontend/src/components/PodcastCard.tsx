@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 interface PodcastCardProps {
   podcast: {
+    id: string;
     title: string;
     category: string;
     description: string;
@@ -39,7 +40,7 @@ export default function PodcastCard({ podcast, isFavorite, onToggleFavorite }: P
 
   return (
     <Card
-      onClick={() => router.push(`/podcast/${encodeURIComponent(podcast.title)}`)} className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in bg-card/50 backdrop-blur-sm border-border/50">
+      onClick={() => router.push(`/podcast/${encodeURIComponent(podcast.id)}`)} className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in bg-card/50 backdrop-blur-sm border-border/50">
         <div className="relative overflow-hidden">
         <img
           src={podcast.image}
