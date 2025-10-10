@@ -8,7 +8,7 @@
     "prebuild": "npm run clean",
     "build": "tsc",
     "dev": "npm run build && nodemon dist/server.ts",
-    "start": "node dist/server.ts",
+    "start": "node dist/server.js"
     "seed": "ts-node src/utils/seed.ts",
     "test": "vitest run"
   },
