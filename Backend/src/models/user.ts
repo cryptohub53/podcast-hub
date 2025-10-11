@@ -11,6 +11,7 @@ export interface UserDocument extends Document {
   recentlyPlayed: Types.ObjectId[];
   avatarUrl?: string;
   role: UserRole;
+  provider?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export interface UserInput {
   recentlyPlayed?: Types.ObjectId[];
   avatarUrl?: string;
   role?: UserRole;
+  provider?: string;
 }
 
 // User Schema
@@ -81,6 +83,7 @@ const userSchema = new Schema<UserDocument>(
       enum: Object.values(UserRole),
       default: UserRole.USER,
     },
+    provider: String,
   },
   { 
     // Adds createdAt and updatedAt automatically

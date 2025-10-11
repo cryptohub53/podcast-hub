@@ -3,7 +3,9 @@ import cors from "cors";
 import router from "./routes";
 import { globalErrorHandler } from "./middlewares/errorMiddleware";
 import { NotFoundError } from "./utils/error";
-
+import { ExpressAuth } from "@auth/express";
+import { authConfig } from "./utils/auth.config";
+import { authenticatedUser, currentSession } from "./middlewares/auth.middleware";
 
 const app: Express = express();
 
@@ -17,9 +19,14 @@ const app: Express = express();
 // };
 
 // Middleware
+//app.set('trust proxy', true);
+
 app.use(cors());
 app.use(express.json({ limit: '10mb' })); // Increased limit for file uploads
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Set session in res.locals
+app.use(currentSession)
 
 // Request logging middleware (development only)
 if (process.env.NODE_ENV !== 'production') {
@@ -40,7 +47,26 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // API routes
+
+// Setup auth routes synchronously
+console.log("🔧 Setting up auth routes...");
+try {
+  app.use("/auth", ExpressAuth(authConfig));
+  console.log("✅ Auth routes configured successfully");
+} catch (error) {
+  console.error("❌ Failed to setup auth routes:", error);
+  throw error;
+}
+
 app.use('/api/v1', router);
+
+app.get("/session", (req: Request, res: Response) => {
+  res.json({session: res.locals.session});
+});
+
+app.get("/api/v1/authenticated", authenticatedUser, (req: Request, res: Response) => {
+  res.json({message: "Authenticated"});
+});
 
 // 404 handler - must be after all routes
 app.use((req: Request, res: Response, next: NextFunction) => {
