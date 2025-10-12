@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { UserRole } from "../utils/constants";
+import { UserRole } from "../utils/constants.js";
 
 // Interface for User document
 export interface UserDocument extends Document {
@@ -12,6 +12,7 @@ export interface UserDocument extends Document {
   avatarUrl?: string;
   role: UserRole;
   provider?: string;
+  emailVerified?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -51,7 +52,7 @@ const userSchema = new Schema<UserDocument>(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: false,
       minlength: [6, "Password must be at least 6 characters long"],
       select: false, // Don't include password in queries by default
     },
@@ -84,6 +85,7 @@ const userSchema = new Schema<UserDocument>(
       default: UserRole.USER,
     },
     provider: String,
+    emailVerified: Date,
   },
   { 
     // Adds createdAt and updatedAt automatically

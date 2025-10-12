@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index";
+import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index.js";
 import { PaginateResult } from "mongoose";
 import mongoose from "mongoose";
-import { Status, UserRole } from "../utils/constants";
-import { moveObjectToPermanentBucket } from "../utils/aws";
-import { catchAsync } from "../middlewares/errorMiddleware";
-import { NotFoundError, ForbiddenError, ValidationError, AWSError } from "../utils/error";
+import { Status, UserRole } from "../utils/constants.js";
+import { moveObjectToPermanentBucket } from "../utils/aws.js";
+import { catchAsync } from "../middlewares/errorMiddleware.js";
+import { NotFoundError, ForbiddenError, ValidationError, AWSError } from "../utils/error.js";
 
 /**
  * @desc Get all podcasts (paginated)

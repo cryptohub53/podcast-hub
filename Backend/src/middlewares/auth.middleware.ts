@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { getSession } from "@auth/express"
-import { authConfig } from "../utils/auth.config.js"
+import { authConfig } from "../controllers/auth.js";
 import type { NextFunction, Request, Response } from "express"
 
 export async function authenticatedUser(

@@ -1,4 +1,4 @@
-import episodeController from "../controllers/episode";
+import episodeController from "../controllers/episode.js";
 import { Router } from "express";
 
 const { 

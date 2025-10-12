@@ -1,5 +1,5 @@
-import podcastController from "../controllers/podcast";
-import episodeController from "../controllers/episode";
+import podcastController from "../controllers/podcast.js";
+import episodeController from "../controllers/episode.js";
 import { Router } from "express";
 
 const {

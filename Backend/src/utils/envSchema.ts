@@ -31,9 +31,11 @@ const envSchema = zod.object({
     ? zod.string().optional()
     : zod.string().min(1, "AWS_PREM_BUCKET_NAME is required in non-dev environments"),
   AWS_REGION: zod.string().min(1, "AWS_REGION is required"),
+  // Auth configuration
   GOOGLE_CLIENT_ID: zod.string().min(1, "GOOGLE_CLIENT_ID is required"),
   GOOGLE_CLIENT_SECRET: zod.string().min(1, "GOOGLE_CLIENT_SECRET is required"),
   AUTH_SECRET: zod.string().min(1, "AUTH_SECRET is required"),
+  AUTH_RESEND_KEY: zod.string().min(1, "AUTH_RESEND_KEY is required"),  
 });
 
 /**

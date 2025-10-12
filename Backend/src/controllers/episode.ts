@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { Episode, EpisodeDocument, Podcast } from "../models/index";
+import { Episode, EpisodeDocument, Podcast } from "../models/index.js";
 import { PaginateResult } from "mongoose";
-import { generateUploadUrl } from "../utils/aws";
-import { catchAsync } from "../middlewares/errorMiddleware";
-import { NotFoundError, AWSError } from "../utils/error";
+import { generateUploadUrl } from "../utils/aws.js";
+import { catchAsync } from "../middlewares/errorMiddleware.js";
+import { NotFoundError, AWSError } from "../utils/error.js";
 
 /**
  * @desc Get all episodes (paginated)
