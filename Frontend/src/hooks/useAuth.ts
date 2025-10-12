@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 
 interface UserSession {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
+  user: {
+    name: string;
+    email: string;
+  },
+  expires: string;
 }
 
 export function useAuth(){
@@ -40,6 +41,7 @@ export function useAuth(){
   const signInGoogle = async () => {
     try {
       const response = await fetch(`${process.env.NEXTAUTH_API_URL || 'http://localhost:5000/auth'}/signin/google`, {
+        method: 'POST',
         credentials: 'include',
       });
       
@@ -100,6 +102,6 @@ export function useAuth(){
     signInEmail,
     signOut,
     isAuthenticated: !!session,
-    user: session,
+    user: session?.user,
   };
 }

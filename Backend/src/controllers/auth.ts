@@ -3,6 +3,7 @@ import Google from "@auth/express/providers/google";
 import Resend from "@auth/express/providers/resend";
 import validatedEnv from "../utils/envSchema.js";
 import { User } from "../models/index.js";
+import { UserRole } from "../utils/constants.js";
 import { sendVerificationRequest } from "../utils/email.auth.js";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "../utils/db.client.js";
@@ -47,26 +48,40 @@ export const authConfig: ExpressAuthConfig = {
   },
   callbacks: {
     async session({ session, token }) {
+      // Add user ID to session for easier access
+      if (token?.id) {
+        session.user.id = token.id as string;
+      }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) token.id = user.id;
+    async jwt({ token, user, account }) {
+      // Store user ID in token
+      if (user) {
+        token.id = user.id;
+      }
+
+      // For OAuth providers, ensure user exists in database
+      if (account && user?.email) {
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          // Create user if doesn't exist (OAuth sign-up)
+          const newUser = await User.create({
+            name: user.name || 'Unknown',
+            email: user.email,
+            provider: account.provider,
+            role: UserRole.USER, // Default role
+          });
+          token.id = newUser._id.toString();
+        } else {
+          token.id = existingUser._id.toString();
+        }
+      }
+
       return token;
     },
-    async signIn({ user, account }){
-      const existingUser = await User.findOne({ email: user.email });
-      if (!existingUser) {
-        await User.create({
-          name: user.name || user.email?.split('@')[0] || 'User', // Fallback name for email users
-          email: user.email,
-          avatarUrl: user.image || null, // Email users won't have image
-          provider: account?.provider || "unknown",
-          favorites: [],
-          recentlyPlayed: [],
-        });
-      }
-      return true;
-    }
+    async redirect() {
+      return validatedEnv.FRONTEND_URL;
+    },
   },
   events: {
     async signIn(message) {
