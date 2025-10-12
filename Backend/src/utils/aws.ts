@@ -6,8 +6,10 @@
  * - Moving uploaded objects from the temporary to permanent bucket
  */
 
-import { S3 } from "aws-sdk";
-import validatedEnv from "./envSchema";
+import AWS from "aws-sdk";
+import validatedEnv from "./envSchema.js";
+
+const { S3 } = AWS;
 
 // Destructure and validate required environment variables
 const {

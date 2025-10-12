@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../utils/error";
+import { AppError } from "../utils/error.js";
 import mongoose from "mongoose";
 
 // Handle MongoDB Cast Error (Invalid ObjectId)

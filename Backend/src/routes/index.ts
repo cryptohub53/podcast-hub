@@ -1,7 +1,7 @@
 import { Router } from "express";
-import podcastRouter from "./podcastRoutes";
-import contactRouter from "./contactRoutes";
-import episodeRouter from "./episodeRoutes";
+import podcastRouter from "./podcastRoutes.js";
+import contactRouter from "./contactRoutes.js";
+import episodeRouter from "./episodeRoutes.js";
 
 const router = Router();
 

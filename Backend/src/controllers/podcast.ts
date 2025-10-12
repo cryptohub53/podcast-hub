@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index";
+import { EpisodeDocument, Podcast, PodcastDocument, User } from "../models/index.js";
 import { PaginateResult } from "mongoose";
 import mongoose from "mongoose";
-import { Status, UserRole } from "../utils/constants";
-import { moveObjectToPermanentBucket } from "../utils/aws";
-import { catchAsync } from "../middlewares/errorMiddleware";
-import { NotFoundError, ForbiddenError, ValidationError, AWSError } from "../utils/error";
+import { Status, UserRole } from "../utils/constants.js";
+import { moveObjectToPermanentBucket } from "../utils/aws.js";
+import { catchAsync } from "../middlewares/errorMiddleware.js";
+import { NotFoundError, ForbiddenError, ValidationError, AWSError, UnauthorizedError } from "../utils/error.js";
 
 /**
  * @desc Get all podcasts (paginated)
@@ -107,14 +107,14 @@ const podcastSearchAndFilterByTitleOrCategory = catchAsync(async (
 /**
  * @desc User requests to upload a podcast (saved as pending)
  * @route POST /podcasts/request-upload
- * @access Public
+ * @access Authenticated Users
  */
 const requestToUploadPodcastByUser = catchAsync(async (req: Request, res: Response): Promise<void> => {
-  const { title, description, author, category, coverImageUrl, userId } = req.body;
+  const { title, description, author, category, coverImageUrl } = req.body;
 
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new NotFoundError("User not found");
+  // User is already verified by authenticatedUser middleware
+  if (!req.user) {
+    throw new UnauthorizedError("Authentication required");
   }
 
   const podcast = await Podcast.create({
@@ -124,6 +124,8 @@ const requestToUploadPodcastByUser = catchAsync(async (req: Request, res: Respon
     category,
     coverImageUrl,
     status: Status.PENDING,
+    // You might want to add a createdBy field to track who created the podcast
+    // createdBy: req.user.id,
   });
 
   res.status(201).json({
@@ -142,7 +144,7 @@ const requestToUploadPodcastByUser = catchAsync(async (req: Request, res: Respon
 
 /**
  * @desc Admin approves or rejects a podcast request
- * @route PATCH /podcasts/:id/approve-reject
+ * @route PATCH /podcasts/:id/status
  * @access Admin
  */
 const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Response): Promise<void> => {
@@ -150,24 +152,17 @@ const adminApproveOrRejectPodcast = catchAsync(async (req: Request, res: Respons
 
   try {
     const { id } = req.params;
-    const { status, adminId } = req.body;
+    const { status } = req.body;
+
+    // Admin verification is handled by requireAdmin middleware
+    if (!req.user) {
+      throw new UnauthorizedError("Authentication required");
+    }
 
     // Validate status
     const validStatuses = [Status.APPROVED, Status.REJECTED];
     if (!validStatuses.includes(status)) {
       throw new ValidationError("Invalid status. Must be 'approved' or 'rejected'");
-    }
-    if (!adminId) {
-      throw new ValidationError("Admin ID is required");
-    }
-    // Check admin exists and has admin role
-    const admin = await User.findById(adminId);
-    if (!admin) {
-      throw new NotFoundError("Admin not found");
-    }
-
-    if (admin.role !== UserRole.ADMIN) {
-      throw new ForbiddenError("Access denied. Admin role required");
     }
 
     // Start transaction

@@ -1,6 +1,6 @@
 import mongoose, { Document, PaginateModel, Schema, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { PodcastCategory, Status } from "../utils/constants";
+import { PodcastCategory, Status } from "../utils/constants.js";
 
 
 // Interface for Podcast document
