@@ -177,11 +177,6 @@ podcast-hub/
 - Verify the API endpoint URL in `contact/page.tsx`
 - Check browser console for errors
 
-### Navbar not sticky:
-- Clear browser cache
-- Check if CSS is loading properly
-- Verify Tailwind CSS is configured
-
 ## Next Steps
 
 1. Replace Ethereal Email with a production email service
