@@ -52,12 +52,12 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Podcasts', href: '/#podcasts', icon: Headphones },
+    { name: 'Podcasts', href: '/podcast', icon: Headphones },
     { name: 'Contact', href: '/contact', icon: Mail },
   ];
 
   const scrollToTop = (e: React.MouseEvent, href: string) => {
-    if (href === '/') {
+    if (href === '/' && pathname === '/') {
       e.preventDefault();
       window.scrollTo({
         top: 0,
@@ -80,12 +80,12 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link 
-              href="/" 
+              href="/"
               className="flex items-center gap-2 sm:gap-3 group relative z-10"
               onClick={(e) => scrollToTop(e, '/')}
             >
               <Image 
-                src="/podcast-hub-logo.png" 
+                src="/icon.svg"
                 alt="Podcast Hub Logo" 
                 width={180}
                 height={60}
